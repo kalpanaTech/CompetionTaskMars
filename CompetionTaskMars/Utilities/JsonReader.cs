@@ -22,5 +22,11 @@ namespace CompetionTaskMars.Utilities
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public string College { get; set; }
+        public string Country { get; set; }
+        public string Title { get; set; }
+        public string Degree { get; set; }
+        public string Year { get; set; }
+        
     }
 }
