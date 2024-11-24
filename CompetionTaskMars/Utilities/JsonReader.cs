@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using CompetionTaskMars.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +11,22 @@ namespace CompetionTaskMars.Utilities
 {
     public static class JsonReader
     {
-        public static Credentials GetCredentials()
+        public static List<EducationCredentials> GetCredentialsList(string jsonFilePath)
         {
-            var jsonFilePath = "C:\\repo\\CompetionTaskMars\\CompetionTaskMars\\CompetionTaskMars\\TestData\\testData.json"; 
             var jsonData = File.ReadAllText(jsonFilePath);
-            return JsonConvert.DeserializeObject<Credentials>(jsonData);
+            return JsonConvert.DeserializeObject<List<EducationCredentials>>(jsonData);
         }
-    }
 
-    public class Credentials
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string College { get; set; }
-        public string Country { get; set; }
-        public string Title { get; set; }
-        public string Degree { get; set; }
-        public string Year { get; set; }
-        
+        public static List<SignInCreadentials> GetSignInCredentialsList(string jsonFilePath)
+        {
+            var jsonData = File.ReadAllText(jsonFilePath);
+            return JsonConvert.DeserializeObject<List<SignInCreadentials>>(jsonData);
+        }
+
+        public static List<CertificationCredentials> GetCertificationCredentialsList(string jsonFilePath)
+        {
+            var jsonData = File.ReadAllText(jsonFilePath);
+            return JsonConvert.DeserializeObject<List<CertificationCredentials>>(jsonData);
+        }
     }
 }

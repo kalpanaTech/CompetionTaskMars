@@ -1,0 +1,19 @@
+﻿
+[
+  {
+    "Action": "Add",
+    "College": "Cambridge",
+    "Country": "United Kingdom",
+    "Title": "B.A",
+    "Degree": "Computer Science",
+    "Year": "2021"
+  },
+  {
+    "Action": "CancelAdd",
+    "College": "Messy",
+    "Country": "Australia",
+    "Title": "M.A",
+    "Degree": "Information Technology",
+    "Year": "2020"
+  }
+]

@@ -13,7 +13,7 @@ namespace CompetionTaskMars.Pages
 {
     public class SignIn
     {
-        private readonly IWebDriver driver; 
+        private readonly IWebDriver driver;
         private readonly By signInButtonLocator = By.XPath("//A[@class='item'][text()='Sign In']");
         private readonly By emailTextBoxLocator = By.XPath("//input[@placeholder='Email address' and @name='email']");
         private readonly By passwordTextBoxLocator = By.XPath("//input[@placeholder='Password' and @name='password']");
@@ -22,12 +22,11 @@ namespace CompetionTaskMars.Pages
 
         public SignIn(IWebDriver driver)
         {
-            this.driver = driver; 
+            this.driver = driver;
         }
 
         public void LoginActions(string email, string password)
         {
-            // Launch profile page
             driver.Navigate().GoToUrl("http://localhost:5000/Home");
             driver.Manage().Window.Maximize();
 

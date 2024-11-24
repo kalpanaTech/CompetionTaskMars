@@ -2,6 +2,7 @@
 using AventStack.ExtentReports.Reporter;
 using CompetionTaskMars.Helpers;
 using CompetionTaskMars.Pages;
+using CompetionTaskMars.Steps;
 using CompetionTaskMars.Utilities;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -16,83 +17,58 @@ namespace CompetionTaskMars.Tests
     public class Hooks : Driver
     {
         public static ExtentReports extent;
-        public ExtentTest test;
+        protected ExtentTest test;
 
         private SignIn signInObj;
-        private Education educationActions;
 
         [OneTimeSetUp]
         public void SetupReport()
         {
-            var htmlReporter = new ExtentSparkReporter("C:\\repo\\CompetionTaskMars\\Reports\\ExtentReport.html");
+            // Initialize Extent Report
+            var reportPath = "C:\\repo\\CompetionTaskMars\\CompetionTaskMars\\CompetionTaskMars\\Reports\\ExtentReport.html";
+            var htmlReporter = new ExtentSparkReporter(reportPath);
+
             extent = new ExtentReports();
             extent.AttachReporter(htmlReporter);
+
             htmlReporter.Config.DocumentTitle = "Mars Competition Test Report";
             htmlReporter.Config.ReportName = "Automation Test Report";
             htmlReporter.Config.Theme = AventStack.ExtentReports.Reporter.Config.Theme.Standard;
-            extent.AddSystemInfo("UserName", "Kalpana Dissanayake");
+
+            extent.AddSystemInfo("Tester", "Kalpana Dissanayake");
         }
 
         [SetUp]
         public void SetUp()
         {
-            // Initialize WebDriver and SignIn object
+            // Initialize WebDriver and ExtentTest for current test
             driver = InitializeDriver("chrome");
             test = extent.CreateTest(TestContext.CurrentContext.Test.Name);
 
-            signInObj = new SignIn(driver);
-            educationActions = new Education(driver);
+            // Initialize SignIn and perform Login
+            var signInObj = new SignIn(driver);
 
-            // Perform Login using credentials from JSON
-            var credentials = Utilities.JsonReader.GetCredentials(); 
-             signInObj.LoginActions(credentials.Email, credentials.Password);            
-            
-        }
+            var credentialsList = Utilities.JsonReader.GetSignInCredentialsList("C:\\repo\\CompetionTaskMars\\CompetionTaskMars\\CompetionTaskMars\\TestData\\LoginCredentials.json");
+            var credentials = credentialsList.First();
 
-        [Test]
-        public void TestAddNewEducation()
-        {
-            var credentials = Utilities.JsonReader.GetCredentials();
-            test.Info("Starting 'Add New Education' test");
+            signInObj.LoginActions(credentials.Email, credentials.Password);
 
-            educationActions.NavigateToEducationTab();
-            educationActions.AddNewEducationButtonActions();
-            educationActions.AddCollegeUniversityNameActions(credentials.College);
-            educationActions.AddCountyOfCollegeUniversityActions(credentials.Country);
-            educationActions.AddTitleActions(credentials.Title);
-            educationActions.AddDegreeActions(credentials.Degree);
-            educationActions.AddYearOfGraduationActions(credentials.Year);
-            educationActions.AddEducationButtonActions();
-            educationActions.VerifyToastMessageActions("Add");
-            educationActions.NavigateToEducationTab();
+            test.Info("Login successful");
 
-            string addedCountryOfCollege = educationActions.GetAddedCountryOnProfilePage();
-            Console.WriteLine("Recorded Country: " + addedCountryOfCollege); 
-            string addedCollege = educationActions.GetAddedCollegeUniversityNameOnProfilePage();
-            string addedTitle = educationActions.GetAddedTitleOnProfilePage();
-            string addedDegree = educationActions.GetAddedDegreeOnProfilePage();
-            string addedYear = educationActions.GetAddedYearOfGraduationYearOnProfilePage();
-
-            Assert.That(addedCountryOfCollege == credentials.Country, "Country has not been added");
-            Assert.That(addedCollege == credentials.College, "College has not been added");
-            Assert.That(addedTitle == credentials.Title, "Title has not been added");
-            Assert.That(addedDegree == credentials.Degree, "Degree has not been added");
-            Assert.That(addedYear == credentials.Year, "Grsduation Year has not been added");
-
-            test.Pass("Add New Education Test case passed successfully.");
         }
 
         [TearDown]
         public void TearDown()
         {
-            // Capture screenshot if the test fails
-            if (TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
+            // Capture screenshot on failure
+            var outcome = TestContext.CurrentContext.Result.Outcome.Status;
+            if (outcome == TestStatus.Failed)
             {
                 try
                 {
-                    var screenshot = ((ITakesScreenshot)Driver.driver).GetScreenshot();
-
+                    var screenshot = ((ITakesScreenshot)driver).GetScreenshot();
                     var screenshotDirectory = "Screenshots";
+
                     if (!Directory.Exists(screenshotDirectory))
                     {
                         Directory.CreateDirectory(screenshotDirectory);
@@ -100,14 +76,21 @@ namespace CompetionTaskMars.Tests
 
                     var screenshotPath = $"{screenshotDirectory}/{TestContext.CurrentContext.Test.Name}.png";
                     screenshot.SaveAsFile(screenshotPath);
-                    test.AddScreenCaptureFromPath(screenshotPath);
+
+                    test.Fail("Test failed.")
+                        .AddScreenCaptureFromPath(screenshotPath);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Failed to save screenshot: " + ex.Message);
+                    test.Fail("Failed to capture screenshot: " + ex.Message);
                 }
             }
+            else
+            {
+                test.Pass("Test passed successfully.");
+            }
 
+            // Quit WebDriver
             QuitDriver();
         }
 

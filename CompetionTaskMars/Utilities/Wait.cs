@@ -10,7 +10,7 @@ namespace CompetionTaskMars.Utilities
 {
     public class Wait
     {
-        //Generic function to wait
+
         public static void WaitToBeClickable(IWebDriver driver, By locator, int seconds)
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
