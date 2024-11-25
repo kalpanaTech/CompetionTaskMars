@@ -346,8 +346,8 @@ namespace CompetionTaskMars.Pages
                 Assert.Fail(" User Search Box not located:" + ex.Message);
             }
 
-            Wait.WaitToBeVisible(driver, firstSearchResultLocator, 5);
-            Wait.WaitToBeClickable(driver, firstSearchResultLocator, 5);
+            Wait.WaitToBeVisible(driver, firstSearchResultLocator, 10);
+            Wait.WaitToBeClickable(driver, firstSearchResultLocator, 10);
             try
             {
                 IWebElement firstSearchResult = driver.FindElement(firstSearchResultLocator);

@@ -20,7 +20,6 @@ namespace CompetionTaskMars.Tests
         public void Init()
         {
             educationStepsObj = new EducationSteps(driver);
-            educationStepsObj.Cleanup();
             educationStepsObj.NavigateToEducationTab();
         }
 
@@ -145,11 +144,11 @@ namespace CompetionTaskMars.Tests
                 test.Pass("Cancel Update Education Test case passed successfully.");
             }
         }
-
         [TearDown]
         public void CleanupAfterTest()
         {
             educationStepsObj.Cleanup();
         }
+
     }
 }

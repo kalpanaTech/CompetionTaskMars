@@ -20,7 +20,6 @@ namespace CompetionTaskMars.Tests
         public void Init()
         {
             certificationStepsObj = new CertificationSteps(driver);
-            certificationStepsObj.CleanupExistingCertification();
             certificationStepsObj.NavigateToTheCertificationTab();
         }
 
@@ -144,7 +143,6 @@ namespace CompetionTaskMars.Tests
         {
             certificationStepsObj.CleanupExistingCertification();
         }
-
     }
 
 }
