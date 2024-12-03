@@ -1,0 +1,16 @@
+﻿[
+  {
+    "Action": "Add",
+    "Certificate": "Software Testing",
+    "CertifiedFrom": "Udemy",
+    "CertificationYear": "2010",
+    "User": "Kalpana Dissanayake"
+  },
+  {
+    "Action": "Update",
+    "Certificate": "Software Development",
+    "CertifiedFrom": "Google",
+    "CertificationYear": "2011",
+    "User": "Kalpana Dissanayake"
+  }
+]

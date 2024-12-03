@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CompetionTaskMars": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
